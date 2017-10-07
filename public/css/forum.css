@@ -1,0 +1,18 @@
+#forumClothing .badge {
+    display: none;
+    position: absolute;
+    right: 20px;
+}
+
+#forumClothing .badge:hover {
+	color: #aaa;
+}
+
+#forumClothing > div:hover .badge {
+    display: inline-block;
+}
+
+ul.subthread {
+    margin-top: 20px;
+    margin-bottom: 0;
+}

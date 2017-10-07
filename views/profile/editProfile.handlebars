@@ -1,0 +1,31 @@
+<div class="row marginTop marginBottom">
+    <section class="col-md-2">
+        <img id="avatar" src="{{ avatar }}" alt="User avatar" />
+        <input type="file" id="editAvatar" class="fa fa-file" aria-hidden="true" />
+    </section>
+    <form class="col-md-2">
+        <label for="username"></label>
+        <input type="text" id="username" name="username" value="{{username}}" />
+        <label for="email"></label>
+        <input type="email" id="email" name="email" value="{{email}}" />
+        <label for="gender"></label>
+        <select id="gender" name="gender">
+            {{#if gender}}
+                <option value="male" selected>Male</option>
+                <option value="female">Female</option>
+            {{else}}
+                <option value="male">Male</option>
+                <option value="female" selected>Female</option>
+            {{/if}}
+        </select>
+    </form>
+    <span>
+        <i id="save-icon" class="fa fa-floppy-o" aria-hidden="true"></i>
+        <p>Save</p>
+    </span>
+    <span>
+        <i id="cancel-edit-icon" class="fa fa-times" aria-hidden="true"></i>
+        <p>Cancel</p>
+    </span>
+</div>
+<script src="/public/js/profile.js"></script>

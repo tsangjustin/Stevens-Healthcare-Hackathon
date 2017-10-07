@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="x-ua-compatible" content="ie=edge" />
+		<meta name="description" content="CS546 Final Project - Clothing Forum" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Style with Me</title>
+		<!-- JS -->
+		<script src="https://use.fontawesome.com/6f30f70423.js"></script>
+		<!-- CSS -->
+        <link rel="stylesheet" href="/public/css/index.css" />
+        <link rel="stylesheet" href="/public/css/landing-page.css" />
+        <link rel="stylesheet" href="/public/css/forum.css" />
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" href="/public/css/3rd-party/text-decorator/TextareaDecorator.css" />
+		<link rel="stylesheet" href="/public/css/text-decorator.css" />
+        <!-- Precompile JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a style="color: #727272;" class="navbar-brand" href="/">Style With Me</a>
+				</div>
+				<div class="collapse navbar-collapse" id="navbar">
+					<ul class="nav navbar-nav navbar-right">
+						{{#if avatar}}
+							<li class="dropdown navbar-btn">
+								<a aria-label="profile picture" id="navbar-profile" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style='background-image: url("{{ avatar }}")'></a>
+								<ul class="dropdown-menu">
+									<li><a style="color: #727272;" href="/profile">Profile</a></li>
+									<li role="separator" class="divider"></li>
+									<li><a style="color: #727272;" href="/log_out">Log out</a></li>
+								</ul>
+							</li>
+						{{else}}
+							<li class=""><a style="color: #727272;" href="/log_in">Login</a></li>
+							<li class=""><a style="color: #727272;" href="/sign_up">Sign Up</a></li>
+						{{/if}}
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<main id="main" class="container">
+			{{{body}}}
+		</main>
+		<footer class="footer">
+			<div class="container">
+				&#64;Style with Me 2017
+			</div>
+		</footer>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="/public/js/3rd-party/text-decorator/Parser.js"></script>
+		<script src="/public/js/3rd-party/text-decorator/TextareaDecorator.js"></script>
+		<script src="/public/js/text-decorator.js"></script>
+		<script src="/public/js/tota11y.min.js"></script>
+	</body>
+</html>

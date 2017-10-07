@@ -1,0 +1,56 @@
+<div class="row marginTop marginBottom">
+	<div class="col-md-4">
+			<ul class="list-group">
+				<li class="list-group-item active">
+					<a href="/forums/create" class="list-group-item-text badge">
+						New <i class="fa fa-plus landing-header-icon" aria-hidden="true"></i>
+					</a>
+					<h1 class="list-group-item-heading">Your Forums</h1>
+				</li>
+				{{#each forum}}
+					<li class="list-group-item">
+						<a href="forums/{{this._id}}">{{ this.title }}</a>
+					</li>
+				{{else}}
+					<li class="text-center list-group-item">No forums</li>
+					<li class="text-center list-group-item">
+						<a href="/forums/create">
+							<i class="fa fa-plus" aria-hidden="true"></i>
+                            New Forum
+						</a>
+					</li>
+				{{/each}}
+			</ul>
+	</div>
+	<div class="col-md-8">
+		<header id="community-forum-panel-header" class="row">
+			<p class="col-md-6 col-md-offset-3">
+				<a href="/forums">
+          			Community Forums
+				</a>
+			</p>
+			<span class="col-md-3">
+                <select id="forums-filter" class="form-control">
+                    <option value="recent">Most Recent</option>
+                    <option value="popular">Popular</option>
+                </select>
+			</span>
+		</header>
+		<ul id="community-forum-list" class="list-group">
+			{{#each communityForum}}
+				<li class="list-group-item">
+					<img src={{this.avatar}} class="avatar" alt="Forum creator" />
+					<span class="badge">{{ this.comments.length }}</span>
+					<a href="forums/{{this._id}}">{{ this.title }}</a>
+				</li>
+			{{else}}
+				<li class="text-center list-group-item">
+					<p>
+						No forums
+					</p>
+				</li>
+			{{/each}}
+		</ul>
+	</div>
+</div>
+<script src="/public/js/landingPage.js"></script>

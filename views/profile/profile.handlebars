@@ -1,0 +1,22 @@
+<div id="profile-wrapper" class="container-fluid">
+	<div class="row marginTop marginBottom">
+		<section class="col-md-2">
+            <h1>Profile</h1>
+			<img src="{{ avatar }}" alt="User avatar" />
+		</section>
+		<section class="col-md-2">
+            <h2>Bio</h2>
+			<p>
+				Username: {{ username }}
+			</p>
+			<p>
+				Email: {{ email }}
+			</p>
+			<p>
+				Gender: {{ gender }}
+			</p>
+		</section>
+        <i id="edit-icon" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+	</div>
+    <script src="/public/js/profile.js"></script>
+</div>

@@ -1,0 +1,682 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "CS546 API",
+        "description": "Connecting clothing to a smart forum",
+        "version": "0.0.1"
+    },
+    "host": "localhost:5000",
+    "schemes": [
+        "http"
+    ],
+    "basePath": "/",
+    "produces": [
+        "application/json",
+        "text/html"
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "summary": "Landing Page",
+                "description": "Landing page will allow users to navigate to certain clothing type (dress, t-shirt, shoes) and forums",
+                "parameters": [],
+                "tags": [
+                    "Login"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully rendered landing page",
+                        "schema": {
+                            "type": "text/html"
+                        }
+                    },
+                    "301": {
+                        "desciption": "Valid session, redirect to forums page"
+                    },
+                    "502": {
+                        "desciption": "Bad gateway"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    }
+                }
+            }
+        },
+        "/login/": {
+            "post": {
+                "summary": "Login Validation",
+                "description": "Validate user credential to backend",
+                "tags": [
+                    "Login"
+                ],
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "body",
+                        "description": "Username that was passed by user on client side",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "body",
+                        "description": "Username that was passed by user on client side",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully rendered landing page",
+                        "schema": {
+                            "type": "application/json"
+                        }
+                    },
+                    "400": {
+                        "desciption": "Bad request",
+                        "schema": {
+                            "type": "application/json"
+                        }
+                    },
+                    "500": {
+                        "desciption": "Internal server error",
+                        "schema": {
+                            "type": "application/json"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    }
+                }
+            }
+        },
+        "/forums/": {
+            "get": {
+                "summary": "Main Forum Page",
+                "description": "View existing forums by most recent or most popular.",
+                "tags": [
+                    "Forum"
+                ],
+                "parameters": [
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "description": "What order to view the forum posts in.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of forum posts",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/forum"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create forum",
+                "desciption": "Create new forum with desciption of forum and clothing tag",
+                "tags": [
+                    "Forum"
+                ],
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "body",
+                        "description": "Title of forum",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "clothing",
+                        "in": "body",
+                        "description": "Clothing tag of forum",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "userId",
+                        "in": "body",
+                        "description": "Id of user who is creating forum",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "desciption": "Successfully created a forum"
+                    },
+                    "301": {
+                        "desciption": "Redirect to new forum page"
+                    },
+                    "400": {
+                        "desciption": "Bad request"
+                    },
+                    "500": {
+                        "desciption": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/forums/:forum_id": {
+            "get": {
+                "summary": "View post by id",
+                "description": "View specific forum post by id along with all comments associated with it.",
+                "parameters": [
+                    {
+                        "name": "forum_id",
+                        "in": "parameter",
+                        "description": "id of forum to view",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Forum"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully view forum post.",
+                        "schema": {
+                            "type": "text/html"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update forum",
+                "description": "Update specific fields of forum",
+                "tags": [
+                    "Forum"
+                ],
+                "parameters": [
+                    {
+                        "name": "forum_id",
+                        "in": "parameter",
+                        "description": "id of forum to update",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "remove_clothing_tag",
+                        "in": "header",
+                        "description": "array of clothing tag to remove",
+                        "required": false,
+                        "type": "array",
+                        "item": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "add_clothing_tag",
+                        "in": "header",
+                        "description": "array of clothing tag to add",
+                        "required": false,
+                        "type": "array",
+                        "item": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated forum post.",
+                        "schema": {
+                            "type": "application/json"
+                        }
+                    },
+                    "400": {
+                        "desciption": "Bad request",
+                        "schema": {
+                            "type": "application/json"
+                        }
+                    },
+                    "500": {
+                        "desciption": "Internal server error",
+                        "schema": {
+                            "type": "application/json"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete forum",
+                "description": "Remove all forums and comments linked to that forum",
+                "parameters": [
+                    {
+                        "name": "forum_id",
+                        "in": "parameter",
+                        "description": "id of forum to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Forum"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted forum post.",
+                        "schema": {
+                            "type": "application/json"
+                        }
+                    },
+                    "400": {
+                        "desciption": "Bad request",
+                        "schema": {
+                            "type": "application/json"
+                        }
+                    },
+                    "500": {
+                        "desciption": "Internal server error",
+                        "schema": {
+                            "type": "application/json"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    }
+                }
+            }
+        },
+        "/forums/:forum_id/comments/": {
+            "get": {
+                "summary": "Get posted comments.",
+                "description": "Get a list of comments for that forum id.",
+                "parameters": [
+                    {
+                        "name": "forum_id",
+                        "in": "parameter",
+                        "description": "id of forum to view",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "response": {
+                    "200": {
+                        "description": "Successfully posted a comment"
+                    },
+                    "400": {
+                        "desciption": "Bad request"
+                    },
+                    "500": {
+                        "desciption": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Add comment to post.",
+                "description": "Get a list of comments for that forum id.",
+                "parameters": []
+            }
+        },
+        "/forums/:forum_id/comments/:comment_id/": {
+            "get": {
+                "summary": "Get comment by id for specific post",
+                "description": "Return the specified comment",
+                "response": {
+                    "200": {
+                        "description": "Comment contents",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "user_id": "id of user who posted",
+                                "forum_id": "id of original forum post",
+                                "comment": "contents of comment",
+                                "likes": "number of likes on comment",
+                                "likes_users": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "desciption": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a comment.",
+                "description": "Get a list of comments for that forum id.",
+                "parameters": [
+                    {
+                        "name": "comment_id",
+                        "in": "parameter",
+                        "description": "id of forum to view",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+            
+        },
+        "/forums/:clothing_type/": {
+            "get": {
+                "summary": "Sub-forum for clothing type",
+                "description": "Shows all forum posts under specified clothing type",
+                "parameters": [
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "description": "What order to view the forum posts in.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Forum"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of forum posts",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/forum"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create forum",
+                "desciption": "Create new forum with desciption of forum and clothing tag",
+                "parameters": []
+            }
+        },
+        "/clothes/": {
+            "get": {
+                "summary": "Clothes thumbnail selection",
+                "description": "Shows a list of thumbnails and links of clothing, allowing to user to select and create forums based on selections.",
+                "parameters": [
+                    {
+                        "name": "clothing_type",
+                        "in": "query",
+                        "desciption": "clothing type to search by",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Clothing"
+                ],
+                "response": {
+                    "200": {
+                        "desciption": "Successfully got thumbnail selection"
+                    },
+                    "500": {
+                        "desciption": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/profile/": {
+            "get": {
+                "summary": "User Profile",
+                "description": "The User Profile endpoint returns information about the Uber user that has authorized with the application.",
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Profile information for a user",
+                        "schema": {
+                            "$ref": "#/definitions/profile"
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/error"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update User Profile",
+                "desciption": "Allow the user to update fields in their user profile",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [ 
+                    {
+                        "name": "display_name",
+                        "in": "header",
+                        "desciption": "New display name for user",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "desciption": "New email for user",
+                        "required": false,
+                        "type": "string"
+                       
+                    },
+                    {
+                        "name": "password",
+                        "in": "header",
+                        "desciption": "New password for user",
+                        "required": false,
+                        "type": "string"
+                        
+                    },
+                    {
+                        "name": "isMale",
+                        "in": "header",
+                        "desciption": "New gender for user",
+                        "required": false,
+                        "type": "string"
+                        
+                    },
+                    {
+                        "name": "avatar",
+                        "in": "header",
+                        "desciption": "New picture for user",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "desciption": "Profile info updated"
+                    },
+                    "500": {
+                        "desciption": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/profile/posts/": {
+            "get": {
+                "summary": "List of posts created by the user",
+                "desciption": "",
+                "tags": [
+                    "User",
+                    "Forum"
+                ],
+                "responses": {
+                    "200": {
+                        "desciption": "Successfully retrieved user posts",
+                        "schema": {
+                            "$ref": "#/definitions/forum"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+            
+        },
+        "/profile/following/": {
+            "get": {
+                "summary": "List of following post",
+                "description": "List of posts user is following",
+                "tags": [
+                    "User",
+                    "Forum"
+                ],
+                "responses": {
+                    "200": {
+                        "desciption": "Successfully retrieved user is following",
+                        "schema": {
+                            "$ref": "#/definitions/forum"
+                        }
+                    },
+                    "500": {
+                        "desciption": "Internal server error."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "forum": {
+            "type": "object",
+            "properties": {
+                "forum_id": {
+                    "type": "string",
+                    "desciption": "Unique forum identifier"
+                },
+                "createdBy": {
+                    "type": "string",
+                    "desciption": "ID of user"
+                },
+                "createdOn": {
+                    "type": "date",
+                    "desciption": "date post was created"
+                },
+                "label": {
+                    "type": "array",
+                    "description": "Array of labels for forum"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "title of post"
+                },
+                "content": {
+                    "type": "string",
+                    "desciption": "Content of post"
+                },
+                "clothing": {
+                    "type": "array",
+                    "item": {
+                        "type": "string",
+                        "definition": "clothing id array"
+                    }
+                },
+                "comments": {
+                    "type": "array",
+                    "item": {
+                        "schema": "#/definitions/comment"
+                    }
+                }
+            }
+        },
+        "comment": {
+            "type": "object",
+            "schema": {
+                "_id": "string",
+                "datePosted": "date",
+                "displayName": "string",
+                "numberLikes": "int32"
+            }
+        },
+        "profile": {
+            "type": "object",
+            "properties": {
+                "user_id": {
+                    "type": "string",
+                    "description": "id of the user."
+                },
+                "display_name": {
+                    "type": "string",
+                    "description": "Display name of the user."
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email address of the user"
+                },
+                "isMale": {
+                    "type": "boolean",
+                    "desciption": "Gender of the user"
+                },
+                "interestedForums": {
+                    "type": "array",
+                    "item": {
+                        "type": "string",
+                        "desciption": "forum id"
+                    }
+                },
+                "avatar": {
+                    "type": "string",
+                    "description": "Image URL of the user in base64."
+                }
+            }
+        },
+        "error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
